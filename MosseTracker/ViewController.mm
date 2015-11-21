@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#include "MOSSE.h"
 
 @interface ViewController () {
     // UI elements
@@ -19,6 +20,11 @@
     
     // opencv video stream
     CvVideoCamera* _videoCamera;
+    
+    // Tracker
+    MOSSE* tracker;
+    bool needInitialize;
+    bool startTrack;
 }
 
 - (IBAction)actionStart:(id)sender;
@@ -51,6 +57,11 @@
     // set up button
     [self->startButton setEnabled:YES];
     [self->stopButton setEnabled:NO];
+    
+    // set up tracker
+    needInitialize = true;
+    startTrack = false;
+
 }
 
 -(void)didRotateFromInterfaceOrientation:(UIInterfaceOrientation)fromInterfaceOrientation{
@@ -75,13 +86,23 @@
 
 // main method to process the image and do tracking
 - (void)processImage:(Mat&)image {
-    // Do some OpenCV stuff with the image
-    Mat image_copy;
-    cvtColor(image, image_copy, CV_BGRA2BGR);
+    // convert to greyscale image
+    Mat imagebw;
+    cvtColor(image, imagebw, CV_BGR2GRAY);
     
-    // invert image
-    bitwise_not(image_copy, image_copy);
-    cvtColor(image_copy, image, CV_BGR2BGRA);
+    if(startTrack){
+        if(needInitialize){
+            // set up tracker
+            cv::Rect rect = [self getRect];
+            delete tracker;
+            tracker = new MOSSE(imagebw, rect);
+            needInitialize = false;
+            //[self moveRectTo: 240 with: 320];
+        } else {
+            cv::Point loc = tracker->update(imagebw);
+            [self moveRectTo: loc.x with: loc.y];
+        }
+    }
 }
 
 // when the start button is pressed
@@ -90,9 +111,9 @@
     [self->drag2 setHidden:YES];
     [self->startButton setEnabled:NO];
     [self->stopButton setEnabled:YES];
-
     
-    [self moveRectTo: 240 with: 320];
+    startTrack = true;
+    needInitialize = true;
 }
 
 // when the stop button is pressed
@@ -101,6 +122,9 @@
     [self->drag2 setHidden:NO];
     [self->startButton setEnabled:YES];
     [self->stopButton setEnabled:NO];
+    
+    startTrack = false;
+    needInitialize = true;
 }
 
 // get bounding box size into opencv

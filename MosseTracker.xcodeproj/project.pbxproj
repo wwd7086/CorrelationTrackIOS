@@ -7,9 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BD62FB551C00213700E9510F /* MOSSE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD62FB541C00213700E9510F /* MOSSE.cpp */; };
 		D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8B1BFFAFE50069F1DE /* main.m */; };
 		D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */; };
-		D8B81E921BFFAFE50069F1DE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E911BFFAFE50069F1DE /* ViewController.m */; };
+		D8B81E921BFFAFE50069F1DE /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E911BFFAFE50069F1DE /* ViewController.mm */; };
 		D8B81E951BFFAFE50069F1DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E931BFFAFE50069F1DE /* Main.storyboard */; };
 		D8B81E971BFFAFE50069F1DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E961BFFAFE50069F1DE /* Assets.xcassets */; };
 		D8B81E9A1BFFAFE50069F1DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E981BFFAFE50069F1DE /* LaunchScreen.storyboard */; };
@@ -46,12 +47,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BD62FB541C00213700E9510F /* MOSSE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MOSSE.cpp; sourceTree = "<group>"; };
+		BD62FB571C002E8000E9510F /* MOSSE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOSSE.h; sourceTree = "<group>"; };
 		D8B81E871BFFAFE50069F1DE /* MosseTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MosseTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8B81E8B1BFFAFE50069F1DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		D8B81E901BFFAFE50069F1DE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		D8B81E911BFFAFE50069F1DE /* ViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ViewController.m; sourceTree = "<group>"; };
+		D8B81E911BFFAFE50069F1DE /* ViewController.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
 		D8B81E941BFFAFE50069F1DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		D8B81E961BFFAFE50069F1DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D8B81E991BFFAFE50069F1DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -145,10 +148,12 @@
 		D8B81E891BFFAFE50069F1DE /* MosseTracker */ = {
 			isa = PBXGroup;
 			children = (
+				BD62FB571C002E8000E9510F /* MOSSE.h */,
+				BD62FB541C00213700E9510F /* MOSSE.cpp */,
 				D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */,
 				D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */,
 				D8B81E901BFFAFE50069F1DE /* ViewController.h */,
-				D8B81E911BFFAFE50069F1DE /* ViewController.m */,
+				D8B81E911BFFAFE50069F1DE /* ViewController.mm */,
 				D8B81E931BFFAFE50069F1DE /* Main.storyboard */,
 				D8B81E961BFFAFE50069F1DE /* Assets.xcassets */,
 				D8B81E981BFFAFE50069F1DE /* LaunchScreen.storyboard */,
@@ -315,8 +320,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D8B81E921BFFAFE50069F1DE /* ViewController.m in Sources */,
+				D8B81E921BFFAFE50069F1DE /* ViewController.mm in Sources */,
 				D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */,
+				BD62FB551C00213700E9510F /* MOSSE.cpp in Sources */,
 				D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
