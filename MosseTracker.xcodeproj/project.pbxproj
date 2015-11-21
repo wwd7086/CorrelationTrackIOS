@@ -1,0 +1,587 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8B1BFFAFE50069F1DE /* main.m */; };
+		D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */; };
+		D8B81E921BFFAFE50069F1DE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E911BFFAFE50069F1DE /* ViewController.m */; };
+		D8B81E951BFFAFE50069F1DE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E931BFFAFE50069F1DE /* Main.storyboard */; };
+		D8B81E971BFFAFE50069F1DE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E961BFFAFE50069F1DE /* Assets.xcassets */; };
+		D8B81E9A1BFFAFE50069F1DE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D8B81E981BFFAFE50069F1DE /* LaunchScreen.storyboard */; };
+		D8B81EA51BFFAFE50069F1DE /* MosseTrackerTests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81EA41BFFAFE50069F1DE /* MosseTrackerTests.m */; };
+		D8B81EB01BFFAFE50069F1DE /* MosseTrackerUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81EAF1BFFAFE50069F1DE /* MosseTrackerUITests.m */; };
+		D8B81EC01BFFB3310069F1DE /* opencv2.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8B81EBF1BFFB3310069F1DE /* opencv2.framework */; };
+		D8E69A431BFFDF24005EE6C0 /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A421BFFDF24005EE6C0 /* Accelerate.framework */; };
+		D8E69A451BFFDF2A005EE6C0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A441BFFDF2A005EE6C0 /* AVFoundation.framework */; };
+		D8E69A471BFFDF34005EE6C0 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A461BFFDF34005EE6C0 /* AssetsLibrary.framework */; };
+		D8E69A491BFFDF3F005EE6C0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A481BFFDF3F005EE6C0 /* CoreGraphics.framework */; };
+		D8E69A4B1BFFDF48005EE6C0 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A4A1BFFDF48005EE6C0 /* CoreImage.framework */; };
+		D8E69A4D1BFFDF56005EE6C0 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A4C1BFFDF56005EE6C0 /* CoreMedia.framework */; };
+		D8E69A4F1BFFDF67005EE6C0 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A4E1BFFDF66005EE6C0 /* CoreVideo.framework */; };
+		D8E69A511BFFDF7D005EE6C0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A501BFFDF7D005EE6C0 /* QuartzCore.framework */; };
+		D8E69A531BFFDF8E005EE6C0 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A521BFFDF8E005EE6C0 /* Foundation.framework */; };
+		D8E69A551BFFDF99005EE6C0 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D8E69A541BFFDF99005EE6C0 /* UIKit.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		D8B81EA11BFFAFE50069F1DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8B81E7F1BFFAFE50069F1DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8B81E861BFFAFE50069F1DE;
+			remoteInfo = MosseTracker;
+		};
+		D8B81EAC1BFFAFE50069F1DE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D8B81E7F1BFFAFE50069F1DE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D8B81E861BFFAFE50069F1DE;
+			remoteInfo = MosseTracker;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		D8B81E871BFFAFE50069F1DE /* MosseTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MosseTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B81E8B1BFFAFE50069F1DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		D8B81E901BFFAFE50069F1DE /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		D8B81E911BFFAFE50069F1DE /* ViewController.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; path = ViewController.m; sourceTree = "<group>"; };
+		D8B81E941BFFAFE50069F1DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D8B81E961BFFAFE50069F1DE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D8B81E991BFFAFE50069F1DE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D8B81E9B1BFFAFE50069F1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8B81EA01BFFAFE50069F1DE /* MosseTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MosseTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B81EA41BFFAFE50069F1DE /* MosseTrackerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MosseTrackerTests.m; sourceTree = "<group>"; };
+		D8B81EA61BFFAFE50069F1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8B81EAB1BFFAFE50069F1DE /* MosseTrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MosseTrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D8B81EAF1BFFAFE50069F1DE /* MosseTrackerUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MosseTrackerUITests.m; sourceTree = "<group>"; };
+		D8B81EB11BFFAFE50069F1DE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D8B81EBF1BFFB3310069F1DE /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = opencv2.framework; sourceTree = "<group>"; };
+		D8E69A421BFFDF24005EE6C0 /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		D8E69A441BFFDF2A005EE6C0 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		D8E69A461BFFDF34005EE6C0 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
+		D8E69A481BFFDF3F005EE6C0 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		D8E69A4A1BFFDF48005EE6C0 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		D8E69A4C1BFFDF56005EE6C0 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		D8E69A4E1BFFDF66005EE6C0 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		D8E69A501BFFDF7D005EE6C0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		D8E69A521BFFDF8E005EE6C0 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		D8E69A541BFFDF99005EE6C0 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D8B81E841BFFAFE50069F1DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8E69A551BFFDF99005EE6C0 /* UIKit.framework in Frameworks */,
+				D8E69A531BFFDF8E005EE6C0 /* Foundation.framework in Frameworks */,
+				D8E69A511BFFDF7D005EE6C0 /* QuartzCore.framework in Frameworks */,
+				D8E69A4F1BFFDF67005EE6C0 /* CoreVideo.framework in Frameworks */,
+				D8E69A4D1BFFDF56005EE6C0 /* CoreMedia.framework in Frameworks */,
+				D8E69A4B1BFFDF48005EE6C0 /* CoreImage.framework in Frameworks */,
+				D8E69A491BFFDF3F005EE6C0 /* CoreGraphics.framework in Frameworks */,
+				D8E69A471BFFDF34005EE6C0 /* AssetsLibrary.framework in Frameworks */,
+				D8E69A451BFFDF2A005EE6C0 /* AVFoundation.framework in Frameworks */,
+				D8E69A431BFFDF24005EE6C0 /* Accelerate.framework in Frameworks */,
+				D8B81EC01BFFB3310069F1DE /* opencv2.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81E9D1BFFAFE50069F1DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81EA81BFFAFE50069F1DE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D8B81E7E1BFFAFE50069F1DE = {
+			isa = PBXGroup;
+			children = (
+				D8E69A541BFFDF99005EE6C0 /* UIKit.framework */,
+				D8E69A521BFFDF8E005EE6C0 /* Foundation.framework */,
+				D8E69A501BFFDF7D005EE6C0 /* QuartzCore.framework */,
+				D8E69A4E1BFFDF66005EE6C0 /* CoreVideo.framework */,
+				D8E69A4C1BFFDF56005EE6C0 /* CoreMedia.framework */,
+				D8E69A4A1BFFDF48005EE6C0 /* CoreImage.framework */,
+				D8E69A481BFFDF3F005EE6C0 /* CoreGraphics.framework */,
+				D8E69A461BFFDF34005EE6C0 /* AssetsLibrary.framework */,
+				D8E69A441BFFDF2A005EE6C0 /* AVFoundation.framework */,
+				D8E69A421BFFDF24005EE6C0 /* Accelerate.framework */,
+				D8B81EBF1BFFB3310069F1DE /* opencv2.framework */,
+				D8B81E891BFFAFE50069F1DE /* MosseTracker */,
+				D8B81EA31BFFAFE50069F1DE /* MosseTrackerTests */,
+				D8B81EAE1BFFAFE50069F1DE /* MosseTrackerUITests */,
+				D8B81E881BFFAFE50069F1DE /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		D8B81E881BFFAFE50069F1DE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D8B81E871BFFAFE50069F1DE /* MosseTracker.app */,
+				D8B81EA01BFFAFE50069F1DE /* MosseTrackerTests.xctest */,
+				D8B81EAB1BFFAFE50069F1DE /* MosseTrackerUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D8B81E891BFFAFE50069F1DE /* MosseTracker */ = {
+			isa = PBXGroup;
+			children = (
+				D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */,
+				D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */,
+				D8B81E901BFFAFE50069F1DE /* ViewController.h */,
+				D8B81E911BFFAFE50069F1DE /* ViewController.m */,
+				D8B81E931BFFAFE50069F1DE /* Main.storyboard */,
+				D8B81E961BFFAFE50069F1DE /* Assets.xcassets */,
+				D8B81E981BFFAFE50069F1DE /* LaunchScreen.storyboard */,
+				D8B81E9B1BFFAFE50069F1DE /* Info.plist */,
+				D8B81E8A1BFFAFE50069F1DE /* Supporting Files */,
+			);
+			path = MosseTracker;
+			sourceTree = "<group>";
+		};
+		D8B81E8A1BFFAFE50069F1DE /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				D8B81E8B1BFFAFE50069F1DE /* main.m */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		D8B81EA31BFFAFE50069F1DE /* MosseTrackerTests */ = {
+			isa = PBXGroup;
+			children = (
+				D8B81EA41BFFAFE50069F1DE /* MosseTrackerTests.m */,
+				D8B81EA61BFFAFE50069F1DE /* Info.plist */,
+			);
+			path = MosseTrackerTests;
+			sourceTree = "<group>";
+		};
+		D8B81EAE1BFFAFE50069F1DE /* MosseTrackerUITests */ = {
+			isa = PBXGroup;
+			children = (
+				D8B81EAF1BFFAFE50069F1DE /* MosseTrackerUITests.m */,
+				D8B81EB11BFFAFE50069F1DE /* Info.plist */,
+			);
+			path = MosseTrackerUITests;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		D8B81E861BFFAFE50069F1DE /* MosseTracker */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8B81EB41BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTracker" */;
+			buildPhases = (
+				D8B81E831BFFAFE50069F1DE /* Sources */,
+				D8B81E841BFFAFE50069F1DE /* Frameworks */,
+				D8B81E851BFFAFE50069F1DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MosseTracker;
+			productName = MosseTracker;
+			productReference = D8B81E871BFFAFE50069F1DE /* MosseTracker.app */;
+			productType = "com.apple.product-type.application";
+		};
+		D8B81E9F1BFFAFE50069F1DE /* MosseTrackerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8B81EB71BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTrackerTests" */;
+			buildPhases = (
+				D8B81E9C1BFFAFE50069F1DE /* Sources */,
+				D8B81E9D1BFFAFE50069F1DE /* Frameworks */,
+				D8B81E9E1BFFAFE50069F1DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8B81EA21BFFAFE50069F1DE /* PBXTargetDependency */,
+			);
+			name = MosseTrackerTests;
+			productName = MosseTrackerTests;
+			productReference = D8B81EA01BFFAFE50069F1DE /* MosseTrackerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		D8B81EAA1BFFAFE50069F1DE /* MosseTrackerUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D8B81EBA1BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTrackerUITests" */;
+			buildPhases = (
+				D8B81EA71BFFAFE50069F1DE /* Sources */,
+				D8B81EA81BFFAFE50069F1DE /* Frameworks */,
+				D8B81EA91BFFAFE50069F1DE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D8B81EAD1BFFAFE50069F1DE /* PBXTargetDependency */,
+			);
+			name = MosseTrackerUITests;
+			productName = MosseTrackerUITests;
+			productReference = D8B81EAB1BFFAFE50069F1DE /* MosseTrackerUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D8B81E7F1BFFAFE50069F1DE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0700;
+				ORGANIZATIONNAME = "Wenda Wang";
+				TargetAttributes = {
+					D8B81E861BFFAFE50069F1DE = {
+						CreatedOnToolsVersion = 7.0.1;
+						DevelopmentTeam = X99UEM45P8;
+					};
+					D8B81E9F1BFFAFE50069F1DE = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = D8B81E861BFFAFE50069F1DE;
+					};
+					D8B81EAA1BFFAFE50069F1DE = {
+						CreatedOnToolsVersion = 7.0.1;
+						TestTargetID = D8B81E861BFFAFE50069F1DE;
+					};
+				};
+			};
+			buildConfigurationList = D8B81E821BFFAFE50069F1DE /* Build configuration list for PBXProject "MosseTracker" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = D8B81E7E1BFFAFE50069F1DE;
+			productRefGroup = D8B81E881BFFAFE50069F1DE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D8B81E861BFFAFE50069F1DE /* MosseTracker */,
+				D8B81E9F1BFFAFE50069F1DE /* MosseTrackerTests */,
+				D8B81EAA1BFFAFE50069F1DE /* MosseTrackerUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D8B81E851BFFAFE50069F1DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8B81E9A1BFFAFE50069F1DE /* LaunchScreen.storyboard in Resources */,
+				D8B81E971BFFAFE50069F1DE /* Assets.xcassets in Resources */,
+				D8B81E951BFFAFE50069F1DE /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81E9E1BFFAFE50069F1DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81EA91BFFAFE50069F1DE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D8B81E831BFFAFE50069F1DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8B81E921BFFAFE50069F1DE /* ViewController.m in Sources */,
+				D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */,
+				D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81E9C1BFFAFE50069F1DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8B81EA51BFFAFE50069F1DE /* MosseTrackerTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8B81EA71BFFAFE50069F1DE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D8B81EB01BFFAFE50069F1DE /* MosseTrackerUITests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D8B81EA21BFFAFE50069F1DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8B81E861BFFAFE50069F1DE /* MosseTracker */;
+			targetProxy = D8B81EA11BFFAFE50069F1DE /* PBXContainerItemProxy */;
+		};
+		D8B81EAD1BFFAFE50069F1DE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D8B81E861BFFAFE50069F1DE /* MosseTracker */;
+			targetProxy = D8B81EAC1BFFAFE50069F1DE /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		D8B81E931BFFAFE50069F1DE /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8B81E941BFFAFE50069F1DE /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		D8B81E981BFFAFE50069F1DE /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D8B81E991BFFAFE50069F1DE /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		D8B81EB21BFFAFE50069F1DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_BITCODE = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D8B81EB31BFFAFE50069F1DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_BITCODE = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		D8B81EB51BFFAFE50069F1DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = MosseTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Debug;
+		};
+		D8B81EB61BFFAFE50069F1DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = MosseTracker/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTracker;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+			};
+			name = Release;
+		};
+		D8B81EB81BFFAFE50069F1DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MosseTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MosseTracker.app/MosseTracker";
+			};
+			name = Debug;
+		};
+		D8B81EB91BFFAFE50069F1DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				INFOPLIST_FILE = MosseTrackerTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTrackerTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MosseTracker.app/MosseTracker";
+			};
+			name = Release;
+		};
+		D8B81EBB1BFFAFE50069F1DE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MosseTrackerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MosseTracker;
+				USES_XCTRUNNER = YES;
+			};
+			name = Debug;
+		};
+		D8B81EBC1BFFAFE50069F1DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				INFOPLIST_FILE = MosseTrackerUITests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.wwd.MosseTrackerUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_TARGET_NAME = MosseTracker;
+				USES_XCTRUNNER = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D8B81E821BFFAFE50069F1DE /* Build configuration list for PBXProject "MosseTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8B81EB21BFFAFE50069F1DE /* Debug */,
+				D8B81EB31BFFAFE50069F1DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8B81EB41BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTracker" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8B81EB51BFFAFE50069F1DE /* Debug */,
+				D8B81EB61BFFAFE50069F1DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8B81EB71BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTrackerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8B81EB81BFFAFE50069F1DE /* Debug */,
+				D8B81EB91BFFAFE50069F1DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D8B81EBA1BFFAFE50069F1DE /* Build configuration list for PBXNativeTarget "MosseTrackerUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D8B81EBB1BFFAFE50069F1DE /* Debug */,
+				D8B81EBC1BFFAFE50069F1DE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D8B81E7F1BFFAFE50069F1DE /* Project object */;
+}
