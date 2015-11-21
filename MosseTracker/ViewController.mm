@@ -97,10 +97,11 @@
             delete tracker;
             tracker = new MOSSE(imagebw, rect);
             needInitialize = false;
-            //[self moveRectTo: 240 with: 320];
         } else {
-            cv::Point loc = tracker->update(imagebw);
-            [self moveRectTo: loc.x with: loc.y];
+            tracker->update(imagebw);
+            cv::circle(image, tracker->getCenter(), 10, Scalar(255,0,255));
+            //[self moveRectTo: loc.x with: loc.y];
+            //std::cout<<loc.x<<loc.y<<std::endl;
         }
     }
 }
@@ -109,6 +110,7 @@
 - (IBAction)actionStart:(id)sender {
     [self->drag1 setHidden:YES];
     [self->drag2 setHidden:YES];
+    [self->rectOverlay setHidden:YES];
     [self->startButton setEnabled:NO];
     [self->stopButton setEnabled:YES];
     
@@ -120,6 +122,7 @@
 - (IBAction)actionStop:(id)sender {
     [self->drag1 setHidden:NO];
     [self->drag2 setHidden:NO];
+    [self->rectOverlay setHidden:NO];
     [self->startButton setEnabled:YES];
     [self->stopButton setEnabled:NO];
     
