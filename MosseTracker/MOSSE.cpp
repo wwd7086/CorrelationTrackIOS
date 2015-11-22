@@ -8,6 +8,7 @@
 using namespace cv;
 using namespace std;
 
+// return random value from 0-1
 float randNum(){
     return ((float)rand()) / RAND_MAX;
 }
@@ -141,7 +142,7 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
 }
 
 
-cv::Point MOSSE::update(Mat& frame, double rate){
+void MOSSE::update(Mat& frame, double rate){
 
     // run filter to predict movement
     getRectSubPix(frame, size, pos, last_img);
@@ -175,9 +176,6 @@ cv::Point MOSSE::update(Mat& frame, double rate){
     H1=H1*(1.0-rate)+H1_temp*rate;
     H2=H2*(1.0-rate)+H2_temp*rate;
     update_kernel();
-    
-    // return top left corner
-    return Point(pos.x-size.width/2, pos.y-size.height/2);
 }
 
 Mat MOSSE::state_vis(){

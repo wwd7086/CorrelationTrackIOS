@@ -9,10 +9,14 @@ public:
     // constructor
     MOSSE(cv::Mat& frame, cv::Rect rect);
     // call it every frame
-    cv::Point update(cv::Mat& frame, double rate=0.125);
+    void update(cv::Mat& frame, double rate=0.125);
     // return center
     cv::Point getCenter() {
         return pos;
+    }
+    cv::Rect getRect() {
+        return cv::Rect(pos.x-size.width/2,pos.y-size.height/2,
+                        size.width,size.height);
     }
     
     // some visualization TODO

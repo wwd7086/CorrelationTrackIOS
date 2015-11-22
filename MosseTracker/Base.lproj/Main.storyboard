@@ -23,7 +23,7 @@
                                 <animations/>
                             </imageView>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Ovx-XB-5mY">
-                                <rect key="frame" x="96" y="83" width="20" height="17"/>
+                                <rect key="frame" x="169" y="180" width="20" height="17"/>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="0.3755568057" blue="0.26901357180000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -32,7 +32,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qVg-we-3EY">
-                                <rect key="frame" x="216" y="223" width="20" height="17"/>
+                                <rect key="frame" x="433" y="448" width="20" height="17"/>
                                 <animations/>
                                 <color key="backgroundColor" red="1" green="0.37555680573771255" blue="0.2690135717623775" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
@@ -62,6 +62,20 @@
                                     <action selector="actionStop:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qwx-MB-nfY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="fps" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gZH-Bj-1SK">
+                                <rect key="frame" x="37" y="47" width="152" height="35"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="textColor" red="1" green="0.18307394469999999" blue="0.1464415375" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="W: H:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lDx-y3-aUW">
+                                <rect key="frame" x="176" y="48" width="288" height="35"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="28"/>
+                                <color key="textColor" red="1" green="0.18307394469999999" blue="0.1464415375" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -79,7 +93,9 @@
                     <connections>
                         <outlet property="drag1" destination="Ovx-XB-5mY" id="DD7-Su-zVv"/>
                         <outlet property="drag2" destination="qVg-we-3EY" id="8BV-p9-ujL"/>
+                        <outlet property="fpsText" destination="gZH-Bj-1SK" id="qZf-uJ-VsE"/>
                         <outlet property="imageView" destination="tbi-iK-Oh2" id="kug-h8-kv9"/>
+                        <outlet property="sizeText" destination="lDx-y3-aUW" id="6Ty-eo-RDh"/>
                         <outlet property="startButton" destination="PAX-Om-SSx" id="jjl-po-BGV"/>
                         <outlet property="stopButton" destination="ybv-Se-MhC" id="6ve-JY-2Mm"/>
                     </connections>

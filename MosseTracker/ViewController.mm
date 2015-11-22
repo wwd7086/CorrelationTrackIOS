@@ -16,6 +16,8 @@
     __weak IBOutlet UIButton *stopButton;
     __weak IBOutlet UIView *drag1;
     __weak IBOutlet UIView *drag2;
+    __weak IBOutlet UILabel *fpsText;
+    __weak IBOutlet UILabel *sizeText;
     CAShapeLayer * rectOverlay;
     
     // opencv video stream
@@ -25,6 +27,9 @@
     MOSSE* tracker;
     bool needInitialize;
     bool startTrack;
+    
+    // Timer
+    NSDate *lastFrameTime;
 }
 
 - (IBAction)actionStart:(id)sender;
@@ -46,8 +51,8 @@
     self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
     self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-    self.videoCamera.defaultFPS = 30;
-    self.videoCamera.grayscaleMode = NO;
+    self.videoCamera.defaultFPS = 240;
+    self.videoCamera.grayscaleMode = YES;
     self.videoCamera.delegate = self;
     
     // set up bounding box
@@ -86,23 +91,40 @@
 
 // main method to process the image and do tracking
 - (void)processImage:(Mat&)image {
-    // convert to greyscale image
-    Mat imagebw;
-    cvtColor(image, imagebw, CV_BGR2GRAY);
     
+    // log incoming frame rate
+    NSDate *curFrameTime = [NSDate date];
+    NSTimeInterval frameInterval = [curFrameTime timeIntervalSinceDate:lastFrameTime];
+    NSLog(@"frameInterval = %f", frameInterval);
+    lastFrameTime = curFrameTime;
+    
+    cv::Point loc;
     if(startTrack){
         if(needInitialize){
             // set up tracker
             cv::Rect rect = [self getRect];
             delete tracker;
-            tracker = new MOSSE(imagebw, rect);
+            tracker = new MOSSE(image, rect);
             needInitialize = false;
+            // visualize
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                cv::Rect rect = tracker->getRect();
+                sizeText.text = [NSString stringWithFormat:@"W:%d H:%d",rect.width,rect.height ];
+            }];
         } else {
-            tracker->update(imagebw);
+            tracker->update(image);
             cv::circle(image, tracker->getCenter(), 10, Scalar(255,0,255));
-            //[self moveRectTo: loc.x with: loc.y];
-            //std::cout<<loc.x<<loc.y<<std::endl;
         }
+        
+        // log processing frame rate
+        NSDate *finishTime = [NSDate date];
+        NSTimeInterval methodExecution = [finishTime timeIntervalSinceDate:curFrameTime];
+        NSLog(@"execution = %f", methodExecution);
+        // visualize
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            [self moveRect: tracker->getRect()];
+            fpsText.text = [NSString stringWithFormat:@"fps: %d", (int)(1/methodExecution)];
+        }];
     }
 }
 
@@ -110,7 +132,6 @@
 - (IBAction)actionStart:(id)sender {
     [self->drag1 setHidden:YES];
     [self->drag2 setHidden:YES];
-    [self->rectOverlay setHidden:YES];
     [self->startButton setEnabled:NO];
     [self->stopButton setEnabled:YES];
     
@@ -122,12 +143,14 @@
 - (IBAction)actionStop:(id)sender {
     [self->drag1 setHidden:NO];
     [self->drag2 setHidden:NO];
-    [self->rectOverlay setHidden:NO];
     [self->startButton setEnabled:YES];
     [self->stopButton setEnabled:NO];
     
     startTrack = false;
     needInitialize = true;
+    
+    [[NSOperationQueue mainQueue] waitUntilAllOperationsAreFinished];
+    [self refreshRect];
 }
 
 // get bounding box size into opencv
@@ -140,18 +163,24 @@
 }
 
 // move bounding box based on its updated location from opencv
--(void)moveRectTo:(int)xpos with:(int)ypos{
-    // move drags
-    CGFloat xscreen = xpos*1.6;
-    CGFloat yscreen = ypos*1.6;
-    CGFloat xoff = xscreen - drag1.center.x;
-    CGFloat yoff = yscreen - drag1.center.y;
-    // move 1
-    drag1.center = CGPointMake(xscreen, yscreen);
-    // move 2
-    drag2.center = CGPointMake(drag2.center.x+xoff,drag2.center.y+yoff);
-    // refresh
-    [self refreshRect];
+-(void)moveRect:(cv::Rect)rect {
+    
+    UIBezierPath * rectPath=[UIBezierPath bezierPath];
+    
+    //Rectangle coordinates
+    CGPoint view1Center=CGPointMake(rect.x*1.6, rect.y*1.6);
+    CGPoint view4Center=CGPointMake(view1Center.x+rect.width*1.6, view1Center.y+rect.height*1.6);
+    CGPoint view2Center=CGPointMake(view4Center.x, view1Center.y);
+    CGPoint view3Center=CGPointMake(view1Center.x, view4Center.y);
+
+    //Rectangle drawing
+    [rectPath moveToPoint:view1Center];
+    [rectPath addLineToPoint:view2Center];
+    [rectPath addLineToPoint:view4Center];
+    [rectPath addLineToPoint:view3Center];
+    [rectPath addLineToPoint:view1Center];
+    
+    self->rectOverlay.path=rectPath.CGPath;
 }
 
 // add layer which bounding box is drawed on
@@ -170,7 +199,6 @@
     [self->drag1 addGestureRecognizer:pan];
     pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panEventHandler:)];
     [self->drag2 addGestureRecognizer:pan];
-    pan=[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panEventHandler:)];
 }
 
 // moving event for interactive drag
