@@ -30,27 +30,31 @@ Success Metrics:
 ##Schedule: 
 
 Nov 15th  
-   1. Environment setup.
-   2. Code up a basic MOSSE filter.
-   3. Initial test on MOSSE filter (if time permitted)
+   1. Environment setup.	completed
+   2. Code up a basic MOSSE filter.	completed
+   3. Initial test on MOSSE filter (if time permitted)	completed
    
    Wenda:   1                              Yu-Te:  2
 
 Nov 22th  
-   1. MOSSE filter completed 
-   2. Robustness test and improvement
-   3. Get start with UI implementation (if time permitted)
+   1. MOSSE filter completed 	completed
+   2. Robustness test and improvement	completed
+   3. Get start with UI implementation (if time permitted)	completed
    
    Wenda:   2                              Yu-Te: 1
+
+Update Nov 24th: 
+In addition to the scheduled task, we also finished to UI implementation and System Integration. Now, We are ahead of the schedule, so we can focus on improving the performance of the current correlation filter.
 
 Nov 24th  Project CheckPoint
 
 Dec 1st     
-   1. UI completed 
-   2. System Integration with Tracker, UI and camera.
+   1. UI 	completed 
+   2. System Integration with Tracker, UI and camera. 	    completed
    3. Code up a basic Kernelized Correlation filter  (if time permitted)
    
    Wenda:    3 , 2                           Yu-Te: 1, 2
+
 
 Dec 8th     
    1. Whole system completed, test  and improvement. 
