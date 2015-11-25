@@ -70,10 +70,10 @@ Dec 5th
    2. Kernelized Correlation filter test (if time permitted)
    Wenda: 1 Yu-Te: 2
 
-Dec 8th    
-   1.Whole system completed, test and improvement. 
-   2.Slides preparation & Documentation.
-   3.Kernelized Correlation filter completed and test (if time permitted)
+Dec 8th 
+   1. Whole system completed, test and improvement. 
+   2. Slides preparation & Documentation.
+   3. Kernelized Correlation filter completed and test (if time permitted)
    Wenda: 1, 2, 3 Yu-Te: 1, 2, 3
 
 Dec 10th   Project Presentation
