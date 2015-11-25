@@ -30,64 +30,53 @@ Success Metrics:
 ##Schedule: 
 
 Nov 15th  
-   1. Environment setup.	completed
-   2. Code up a basic MOSSE filter.	completed
-   3. Initial test on MOSSE filter (if time permitted)	completed
-   
-   Wenda:   1                              Yu-Te:  2
+   1. Environment setup.	Completed
+   2. Code up a basic MOSSE filter.	Completed
+   3. Initial test on MOSSE filter (if time permitted)	Completed
+   Wenda: 1 Yu-Te: 2
 
 Nov 22th  
-   1. MOSSE filter completed 	completed
-   2. Robustness test and improvement	completed
-   3. Get start with UI implementation (if time permitted)	completed
+   1. MOSSE filter completed 	Completed
+   2. Robustness test and improvement	Completed
+   3. Get start with UI implementation (if time permitted)	Completed
    
-   Wenda:   2                              Yu-Te: 1
+   Wenda: 2 Yu-Te: 1
 
-AHEAD OF SCHEDULE:
-
-UI 	completed 
-System Integration with Tracker, UI and camera. 	    completed
+Ahead of schedule:
+UI: Completed 
+System Integration with Tracker, UI and camera: Completed
 
 
 Nov 24th  Project CheckPoint
 
-Update Nov 24th: 
+Update on Nov 24th: 
 In addition to the scheduled task, we also finished to UI implementation and System Integration. Now, We are ahead of the schedule, so we can focus on improving the performance of the current correlation filter.
 
 (New Schedule)
 
 Nov 28th   
-
    1. Research on AVFoundation 
    2. Research on vDSP FFT Research
-
-   Wenda:   2                           Yu-Te:  1
+   Wenda: 2 Yu-Te: 1
 
 Dec 2nd   
-
    1. Use AVFoundation framework service to Video 
    2. Implement vDSP FFT on correlation filter
    3. Kernelized Correlation filter code up (if time permitted)
-
-   Wenda:   2                           Yu-Te:  1
+   Wenda: 2 Yu-Te: 1
    
 Dec 5th     
-
    1. Whole system completed, test  and improvement. 
    2. Kernelized Correlation filter test (if time permitted)
-   3. 
-   Wenda:     1                               Yu-Te: 2
+   Wenda: 1 Yu-Te: 2
 
 Dec 8th    
-
    1.Whole system completed, test and improvement. 
    2.Slides preparation & Documentation.
    3.Kernelized Correlation filter completed and test (if time permitted)
-   
-   Wenda:     1 , 2 , 3			 	 Yu-Te: 1, 2, 3
+   Wenda: 1, 2, 3 Yu-Te: 1, 2, 3
 
 Dec 10th   Project Presentation
-
 Dec 11th   Project Final Write Up
 
 
