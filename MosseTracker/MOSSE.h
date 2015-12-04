@@ -1,7 +1,6 @@
 
 #include <opencv2/opencv.hpp>
 
-const float eps = 0.00001;
 
 class MOSSE{
 public:
@@ -51,4 +50,8 @@ private:
     // metric for tracking result
     double psr;
     bool isGood=false;
+    
+    // parameters
+    const float eps = 0.00001;
+    const float boundaryThre = 0.2;
 };

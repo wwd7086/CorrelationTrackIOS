@@ -144,24 +144,30 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
 
 void MOSSE::update(Mat& frame, double rate){
 
-    // run filter to predict movement
-    getRectSubPix(frame, size, pos, last_img);
-    preprocess(last_img);
-    
-    // correlate
-    Mat last_resp;
-    Point delta_xy;
-    double psr=correlate(last_img,last_resp,delta_xy);
-    
-    if(psr>0.8) {
-        isGood = true;
-    } else {
-        isGood = false;
+    while(true) {
+        // run filter to predict movement
+        getRectSubPix(frame, size, pos, last_img);
+        preprocess(last_img);
+        
+        // correlate
+        Mat last_resp;
+        Point delta_xy;
+        double psr=correlate(last_img,last_resp,delta_xy);
+        
+        if(psr>0.8) {
+            isGood = true;
+        } else {
+            isGood = false;
+        }
+        
+        // update location
+        pos.x += delta_xy.x;
+        pos.y += delta_xy.y;
+        
+        if(abs(delta_xy.x) < size.width*boundaryThre &&
+           abs(delta_xy.y) < size.height*boundaryThre)
+            break;
     }
-    
-    // update location
-    pos.x += delta_xy.x;
-    pos.y += delta_xy.y;
     
     // train the filte based on the prediction
     getRectSubPix(frame, size, pos, last_img);
