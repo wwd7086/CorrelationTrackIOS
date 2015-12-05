@@ -44,10 +44,6 @@
 #ifndef __OPENCV_CORE_PRIVATE_HPP__
 #define __OPENCV_CORE_PRIVATE_HPP__
 
-#ifndef __OPENCV_BUILD
-#  error this is a private header which should not be used from outside of the OpenCV library
-#endif
-
 #include "opencv2/core.hpp"
 #include "cvconfig.h"
 

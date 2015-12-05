@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD62FB551C00213700E9510F /* MOSSE.cpp in Sources */ = {isa = PBXBuildFile; fileRef = BD62FB541C00213700E9510F /* MOSSE.cpp */; };
+		D851FC9C1C12683D0017E970 /* MyVideoCamera.mm in Sources */ = {isa = PBXBuildFile; fileRef = D851FC9B1C12683D0017E970 /* MyVideoCamera.mm */; };
 		D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8B1BFFAFE50069F1DE /* main.m */; };
 		D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */; };
 		D8B81E921BFFAFE50069F1DE /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = D8B81E911BFFAFE50069F1DE /* ViewController.mm */; };
@@ -49,6 +50,8 @@
 /* Begin PBXFileReference section */
 		BD62FB541C00213700E9510F /* MOSSE.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MOSSE.cpp; sourceTree = "<group>"; };
 		BD62FB571C002E8000E9510F /* MOSSE.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MOSSE.h; sourceTree = "<group>"; };
+		D851FC9B1C12683D0017E970 /* MyVideoCamera.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyVideoCamera.mm; sourceTree = "<group>"; };
+		D851FC9D1C126A9C0017E970 /* MyVideoCamera.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyVideoCamera.h; sourceTree = "<group>"; };
 		D8B81E871BFFAFE50069F1DE /* MosseTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MosseTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8B81E8B1BFFAFE50069F1DE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -149,6 +152,8 @@
 			isa = PBXGroup;
 			children = (
 				BD62FB571C002E8000E9510F /* MOSSE.h */,
+				D851FC9B1C12683D0017E970 /* MyVideoCamera.mm */,
+				D851FC9D1C126A9C0017E970 /* MyVideoCamera.h */,
 				BD62FB541C00213700E9510F /* MOSSE.cpp */,
 				D8B81E8D1BFFAFE50069F1DE /* AppDelegate.h */,
 				D8B81E8E1BFFAFE50069F1DE /* AppDelegate.m */,
@@ -321,6 +326,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D8B81E921BFFAFE50069F1DE /* ViewController.mm in Sources */,
+				D851FC9C1C12683D0017E970 /* MyVideoCamera.mm in Sources */,
 				D8B81E8F1BFFAFE50069F1DE /* AppDelegate.m in Sources */,
 				BD62FB551C00213700E9510F /* MOSSE.cpp in Sources */,
 				D8B81E8C1BFFAFE50069F1DE /* main.m in Sources */,
