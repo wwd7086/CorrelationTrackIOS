@@ -31,6 +31,7 @@ private:
     void shiftRows(cv::Mat& mat,int n);
     void shiftCols(cv::Mat& mat, int n);
     
+    bool isDebug = false;
     // the size of bounding box
     cv::Size size;
     // the center point of bounding box

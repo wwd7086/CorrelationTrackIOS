@@ -272,13 +272,16 @@ double MOSSE::correlate(Mat& img, Mat& last_resp, Point &delta_xy){
                     maxLoc.y-last_resp.size().height/2);
 
     // compute psr
-    Mat side_resp=last_resp(
-        Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
-    Mat mean; Mat stddev;
-    meanStdDev(side_resp, mean, stddev);
-    double smean=mean.at<float>(0);
-    double sstd=stddev.at<float>(0);
-    double psr=(maxVal-smean)/(sstd+eps);
+    double psr = 0.9;
+    if(isDebug){
+        Mat side_resp=last_resp(
+                    Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
+        Mat mean; Mat stddev;
+        meanStdDev(side_resp, mean, stddev);
+        double smean=mean.at<float>(0);
+        double sstd=stddev.at<float>(0);
+        psr=(maxVal-smean)/(sstd+eps);
+    }
     return psr;
 }
 

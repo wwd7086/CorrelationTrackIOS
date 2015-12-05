@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #include "MOSSE.h"
 
+#define DEBUG 0
+
 @interface ViewController () {
     // UI elements
     __weak IBOutlet UIImageView *imageView;
@@ -94,8 +96,8 @@
     
     // log incoming frame rate
     NSDate *curFrameTime = [NSDate date];
-    NSTimeInterval frameInterval = [curFrameTime timeIntervalSinceDate:lastFrameTime];
-    NSLog(@"frameInterval = %f", frameInterval);
+    //NSTimeInterval frameInterval = [curFrameTime timeIntervalSinceDate:lastFrameTime];
+    //NSLog(@"frameInterval = %f", frameInterval);
     lastFrameTime = curFrameTime;
     
     cv::Point loc;
@@ -119,7 +121,8 @@
         // log processing frame rate
         NSDate *finishTime = [NSDate date];
         NSTimeInterval methodExecution = [finishTime timeIntervalSinceDate:curFrameTime];
-        NSLog(@"execution = %f", methodExecution);
+        //NSLog(@"execution = %f", methodExecution);
+
         // visualize
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self moveRect: tracker->getRect()];
