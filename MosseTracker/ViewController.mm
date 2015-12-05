@@ -9,8 +9,6 @@
 #import "ViewController.h"
 #include "MOSSE.h"
 
-#define DEBUG 0
-
 @interface ViewController () {
     // UI elements
     __weak IBOutlet UIImageView *imageView;

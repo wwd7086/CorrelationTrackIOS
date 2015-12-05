@@ -31,28 +31,35 @@ private:
     void shiftRows(cv::Mat& mat,int n);
     void shiftCols(cv::Mat& mat, int n);
     
-    bool isDebug = false;
+    
     // the size of bounding box
     cv::Size size;
     // the center point of bounding box
     cv::Point pos;
+    
     // ground truth response in frequency
     cv::Mat G;
     // filter in frequency
     cv::Mat H1;
     cv::Mat H2;
     cv::Mat H;
+    
     // hannng window for preprocessing
     cv::Mat win;
+    
     // image insdie previous/cur bounding box
     cv::Mat last_img;
     // response from the image
     cv::Mat last_resp;
+    
+    // run extra scoring code
+    bool isDebug = false;
     // metric for tracking result
     double psr;
     bool isGood=false;
     
     // parameters
     const float eps = 0.00001;
-    const float boundaryThre = 0.2;
+    const float boundaryThre = 0.3;
+    const int updateThre = 4;
 };

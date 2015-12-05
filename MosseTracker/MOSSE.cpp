@@ -143,8 +143,9 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
 
 
 void MOSSE::update(Mat& frame, double rate){
-
-    while(true) {
+    
+    int updateCount = 0;
+    while(updateCount < updateThre) {
         // run filter to predict movement
         getRectSubPix(frame, size, pos, last_img);
         preprocess(last_img);
@@ -164,10 +165,15 @@ void MOSSE::update(Mat& frame, double rate){
         pos.x += delta_xy.x;
         pos.y += delta_xy.y;
         
+        // counting
+        updateCount++;
+        
         if(abs(delta_xy.x) < size.width*boundaryThre &&
            abs(delta_xy.y) < size.height*boundaryThre)
             break;
     }
+    if(updateCount>1)
+        std::cout<<"!!large motion iterative update!!:"<<updateCount<<std::endl;
     
     // train the filte based on the prediction
     getRectSubPix(frame, size, pos, last_img);
