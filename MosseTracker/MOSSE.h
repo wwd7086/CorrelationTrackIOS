@@ -1,6 +1,7 @@
+#ifndef MOSSE_H
+#define MOSSE_H
 
 #include <opencv2/opencv.hpp>
-
 
 class MOSSE{
 public:
@@ -60,6 +61,8 @@ private:
     
     // parameters
     const float eps = 0.00001;
-    const float boundaryThre = 0.3;
+    const float boundaryThre = 0.25;
     const int updateThre = 4;
 };
+
+#endif

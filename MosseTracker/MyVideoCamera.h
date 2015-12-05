@@ -41,16 +41,11 @@
     BOOL captureSessionLoaded;
     BOOL running;
     BOOL grayscaleMode;
-    int defaultFPS;
 
     AVCaptureDevicePosition defaultAVCaptureDevicePosition;
     AVCaptureVideoOrientation defaultAVCaptureVideoOrientation;
-    NSString *const defaultAVCaptureSessionPreset;
     
     UIView* parentView;
-    
-    int imageWidth;
-    int imageHeight;
 }
 
 @property (nonatomic, retain) AVCaptureSession* captureSession;
@@ -59,14 +54,9 @@
 @property (nonatomic, readonly) BOOL running;
 @property (nonatomic, readonly) BOOL captureSessionLoaded;
 
-@property (nonatomic, assign) int defaultFPS;
 @property (nonatomic, readonly) AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
 @property (nonatomic, assign) AVCaptureDevicePosition defaultAVCaptureDevicePosition;
 @property (nonatomic, assign) AVCaptureVideoOrientation defaultAVCaptureVideoOrientation;
-@property (nonatomic, strong) NSString *const defaultAVCaptureSessionPreset;
-
-@property (nonatomic, assign) int imageWidth;
-@property (nonatomic, assign) int imageHeight;
 
 @property (nonatomic, retain) UIView* parentView;
 

@@ -22,8 +22,6 @@
 
 - (void)setDesiredCameraPosition:(AVCaptureDevicePosition)desiredPosition;
 
-- (void)updateSize;
-
 @end
 
 
@@ -36,14 +34,9 @@
 
 #pragma mark Public
 
-@synthesize imageWidth;
-@synthesize imageHeight;
 
-
-@synthesize defaultFPS;
 @synthesize defaultAVCaptureDevicePosition;
 @synthesize defaultAVCaptureVideoOrientation;
-@synthesize defaultAVCaptureSessionPreset;
 
 @synthesize captureSession;
 @synthesize captureVideoPreviewLayer;
@@ -81,8 +74,6 @@
         // set camera default configuration
         self.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
         self.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-        self.defaultFPS = 30;
-        self.defaultAVCaptureSessionPreset = AVCaptureSessionPreset352x288;
         
         self.parentView = nil;
     }
@@ -112,8 +103,6 @@
         // set camera default configuration
         self.defaultAVCaptureDevicePosition = AVCaptureDevicePositionFront;
         self.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationLandscapeLeft;
-        self.defaultFPS = 30;
-        self.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
         
         self.parentView = parent;
     }
@@ -144,9 +133,6 @@
         return;
     }
     running = YES;
-    
-    // TOOD update image size data before actually starting (needed for recording)
-    [self updateSize];
     
     if (cameraAvailable) {
         [self startCaptureSession];
@@ -239,13 +225,6 @@
 {
     // set a av capture session preset
     self.captureSession = [[AVCaptureSession alloc] init];
-//    if ([self.captureSession canSetSessionPreset:self.defaultAVCaptureSessionPreset]) {
-//        [self.captureSession setSessionPreset:self.defaultAVCaptureSessionPreset];
-//    } else if ([self.captureSession canSetSessionPreset:AVCaptureSessionPresetLow]) {
-//        [self.captureSession setSessionPreset:AVCaptureSessionPresetLow];
-//    } else {
-//        NSLog(@"[Camera] Error: could not set session preset");
-//    }
 }
 
 - (void)createCaptureDevice;
@@ -338,7 +317,7 @@
     [[self.videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:YES];
     
     
-    // set default FPS
+    // set FPS
     AVCaptureDeviceInput *currentInput = [self.captureSession.inputs objectAtIndex:0];
     AVCaptureDevice *device = currentInput.device;
     
@@ -467,37 +446,4 @@
     }
 }
 
-
-- (void)updateSize;
-{
-    if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPresetPhoto]) {
-        //TODO: find the correct resolution
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPresetHigh]) {
-        //TODO: find the correct resolution
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPresetMedium]) {
-        //TODO: find the correct resolution
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPresetLow]) {
-        //TODO: find the correct resolution
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPreset352x288]) {
-        self.imageWidth = 352;
-        self.imageHeight = 288;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPreset640x480]) {
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    } else if ([self.defaultAVCaptureSessionPreset isEqualToString:AVCaptureSessionPreset1280x720]) {
-        self.imageWidth = 1280;
-        self.imageHeight = 720;
-    } else {
-        self.imageWidth = 640;
-        self.imageHeight = 480;
-    }
-}
 @end

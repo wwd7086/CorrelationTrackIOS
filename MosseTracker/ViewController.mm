@@ -9,6 +9,10 @@
 #import "ViewController.h"
 #include "MOSSE.h"
 
+// converting ratio between bounding box on overlay and opencv
+const float convertRatio = 1.066666667;
+const float convertBiasY = 160;
+
 @interface ViewController () {
     // UI elements
     __weak IBOutlet UIImageView *imageView;
@@ -30,6 +34,7 @@
     
     // Timer
     NSDate *lastFrameTime;
+
 }
 
 - (IBAction)actionStart:(id)sender;
@@ -49,9 +54,7 @@
     // set up opencv video camera
     self.videoCamera = [[MyVideoCamera alloc] initWithParentView:imageView];
     self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
-    self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-    self.videoCamera.defaultFPS = 120;
     self.videoCamera.grayscaleMode = YES;
     self.videoCamera.delegate = self;
     
@@ -113,18 +116,23 @@
             }];
         } else {
             tracker->update(image);
-            cv::circle(image, tracker->getCenter(), 10, Scalar(255,0,255));
         }
         
         // log processing frame rate
         NSDate *finishTime = [NSDate date];
         NSTimeInterval methodExecution = [finishTime timeIntervalSinceDate:curFrameTime];
         //NSLog(@"execution = %f", methodExecution);
-
-        // visualize
+        static int visCount = 0;
+        if(visCount>15){
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                fpsText.text = [NSString stringWithFormat:@"fps: %d", (int)(1/methodExecution)];
+            }];
+            visCount = 0;
+        } else {visCount++;}
+        
+        // visualize bounding box
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
             [self moveRect: tracker->getRect()];
-            fpsText.text = [NSString stringWithFormat:@"fps: %d", (int)(1/methodExecution)];
         }];
     }
 }
@@ -156,10 +164,10 @@
 
 // get bounding box size into opencv
 -(cv::Rect) getRect{
-    int x = drag1.center.x/1.066667;
-    int y = drag1.center.y/1.066667 + 160;
-    int width = (drag2.center.x - drag1.center.x)/1.066667;
-    int height = (drag2.center.y - drag1.center.y)/1.066667;
+    int x = drag1.center.x/convertRatio;
+    int y = drag1.center.y/convertRatio + convertBiasY;
+    int width = (drag2.center.x - drag1.center.x)/convertRatio;
+    int height = (drag2.center.y - drag1.center.y)/convertRatio;
     return cv::Rect(x,y,width,height);
 }
 
@@ -169,8 +177,8 @@
     UIBezierPath * rectPath=[UIBezierPath bezierPath];
     
     //Rectangle coordinates
-    CGPoint view1Center=CGPointMake(rect.x*1.066667, (rect.y-160)*1.066667);
-    CGPoint view4Center=CGPointMake(view1Center.x+rect.width*1.066667, view1Center.y+rect.height*1.066667);
+    CGPoint view1Center=CGPointMake(rect.x*convertRatio, (rect.y-convertBiasY)*convertRatio);
+    CGPoint view4Center=CGPointMake(view1Center.x+rect.width*convertRatio, view1Center.y+rect.height*convertRatio);
     CGPoint view2Center=CGPointMake(view4Center.x, view1Center.y);
     CGPoint view3Center=CGPointMake(view1Center.x, view4Center.y);
 
