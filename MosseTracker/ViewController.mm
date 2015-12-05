@@ -21,7 +21,7 @@
     CAShapeLayer * rectOverlay;
     
     // opencv video stream
-    CvVideoCamera* _videoCamera;
+    MyVideoCamera* _videoCamera;
     
     // Tracker
     MOSSE* tracker;
@@ -36,7 +36,7 @@
 - (IBAction)actionStop:(id)sender;
 
 
-@property (nonatomic, retain) CvVideoCamera* videoCamera;
+@property (nonatomic, retain) MyVideoCamera* videoCamera;
 
 
 @end
@@ -47,7 +47,7 @@
     [super viewDidLoad];
     
     // set up opencv video camera
-    self.videoCamera = [[CvVideoCamera alloc] initWithParentView:imageView];
+    self.videoCamera = [[MyVideoCamera alloc] initWithParentView:imageView];
     self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
     self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
