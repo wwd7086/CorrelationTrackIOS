@@ -239,13 +239,13 @@
 {
     // set a av capture session preset
     self.captureSession = [[AVCaptureSession alloc] init];
-    if ([self.captureSession canSetSessionPreset:self.defaultAVCaptureSessionPreset]) {
-        [self.captureSession setSessionPreset:self.defaultAVCaptureSessionPreset];
-    } else if ([self.captureSession canSetSessionPreset:AVCaptureSessionPresetLow]) {
-        [self.captureSession setSessionPreset:AVCaptureSessionPresetLow];
-    } else {
-        NSLog(@"[Camera] Error: could not set session preset");
-    }
+//    if ([self.captureSession canSetSessionPreset:self.defaultAVCaptureSessionPreset]) {
+//        [self.captureSession setSessionPreset:self.defaultAVCaptureSessionPreset];
+//    } else if ([self.captureSession canSetSessionPreset:AVCaptureSessionPresetLow]) {
+//        [self.captureSession setSessionPreset:AVCaptureSessionPresetLow];
+//    } else {
+//        NSLog(@"[Camera] Error: could not set session preset");
+//    }
 }
 
 - (void)createCaptureDevice;
@@ -285,10 +285,6 @@
             [self.captureSession beginConfiguration];
             
             NSError* error = nil;
-            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
-            if (!input) {
-                NSLog(@"error creating input %@", [error localizedDescription]);
-            }
             
             // support for autofocus
             if ([device isFocusModeSupported:AVCaptureFocusModeContinuousAutoFocus]) {
@@ -300,12 +296,20 @@
                     NSLog(@"unable to lock device for autofocos configuration %@", [error localizedDescription]);
                 }
             }
-            [self.captureSession addInput:input];
             
+            // remove old inputs
             for (AVCaptureInput *oldInput in self.captureSession.inputs) {
                 [self.captureSession removeInput:oldInput];
             }
+
+            // create input
+            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:&error];
+            if (!input) {
+                NSLog(@"error creating input %@", [error localizedDescription]);
+            }
             [self.captureSession addInput:input];
+            
+            // confirm
             [self.captureSession commitConfiguration];
             
             break;
@@ -341,17 +345,28 @@
     NSError *error = nil;
     [device lockForConfiguration:&error];
     
-    float maxRate = ((AVFrameRateRange*) [device.activeFormat.videoSupportedFrameRateRanges objectAtIndex:0]).maxFrameRate;
-    if (maxRate > self.defaultFPS - 1 && error == nil) {
-        [device setActiveVideoMinFrameDuration:CMTimeMake(1, self.defaultFPS)];
-        [device setActiveVideoMaxFrameDuration:CMTimeMake(1, self.defaultFPS)];
-        NSLog(@"[Camera] FPS set to %d", self.defaultFPS);
-    } else {
-        NSLog(@"[Camera] unable to set defaultFPS at %d FPS, max is %f FPS", self.defaultFPS, maxRate);
+    // find the highest frame rate format
+    AVCaptureDeviceFormat *bestFormat = nil;
+    AVFrameRateRange *bestFrameRateRange = nil;
+    for ( AVCaptureDeviceFormat *format in [device formats] ) {
+        for ( AVFrameRateRange *range in format.videoSupportedFrameRateRanges ) {
+            if ( range.maxFrameRate > bestFrameRateRange.maxFrameRate ) {
+                bestFormat = format;
+                bestFrameRateRange = range;
+            }
+        }
     }
-    
-    if (error != nil) {
-        NSLog(@"[Camera] unable to set defaultFPS: %@", error);
+    if ( bestFormat ) {
+        error = nil;
+        if ( [device lockForConfiguration:&error]) {
+            device.activeFormat = bestFormat;
+            device.activeVideoMinFrameDuration = bestFrameRateRange.minFrameDuration;
+            device.activeVideoMaxFrameDuration = bestFrameRateRange.minFrameDuration;
+            [device unlockForConfiguration];
+            NSLog(@"set to hightest possible frame rate %f", bestFrameRateRange.maxFrameRate);
+        } else {
+            NSLog(@"unable to set to hightest frame rate %@", [error localizedDescription]);
+        }
     }
     
     [device unlockForConfiguration];

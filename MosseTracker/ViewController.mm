@@ -51,7 +51,7 @@
     self.videoCamera.defaultAVCaptureDevicePosition = AVCaptureDevicePositionBack;
     self.videoCamera.defaultAVCaptureSessionPreset = AVCaptureSessionPreset640x480;
     self.videoCamera.defaultAVCaptureVideoOrientation = AVCaptureVideoOrientationPortrait;
-    self.videoCamera.defaultFPS = 240;
+    self.videoCamera.defaultFPS = 120;
     self.videoCamera.grayscaleMode = YES;
     self.videoCamera.delegate = self;
     
@@ -155,10 +155,10 @@
 
 // get bounding box size into opencv
 -(cv::Rect) getRect{
-    int x = drag1.center.x/1.6;
-    int y = drag1.center.y/1.6;
-    int width = (drag2.center.x - drag1.center.x)/1.6;
-    int height = (drag2.center.y - drag1.center.y)/1.6;
+    int x = drag1.center.x/1.066667;
+    int y = drag1.center.y/1.066667 + 160;
+    int width = (drag2.center.x - drag1.center.x)/1.066667;
+    int height = (drag2.center.y - drag1.center.y)/1.066667;
     return cv::Rect(x,y,width,height);
 }
 
@@ -168,8 +168,8 @@
     UIBezierPath * rectPath=[UIBezierPath bezierPath];
     
     //Rectangle coordinates
-    CGPoint view1Center=CGPointMake(rect.x*1.6, rect.y*1.6);
-    CGPoint view4Center=CGPointMake(view1Center.x+rect.width*1.6, view1Center.y+rect.height*1.6);
+    CGPoint view1Center=CGPointMake(rect.x*1.066667, (rect.y-160)*1.066667);
+    CGPoint view4Center=CGPointMake(view1Center.x+rect.width*1.066667, view1Center.y+rect.height*1.066667);
     CGPoint view2Center=CGPointMake(view4Center.x, view1Center.y);
     CGPoint view3Center=CGPointMake(view1Center.x, view4Center.y);
 
