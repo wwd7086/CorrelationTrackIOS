@@ -13,8 +13,29 @@ float randNum(){
     return ((float)rand()) / RAND_MAX;
 }
 
+// return optimal fft size which satisfy pow2
+int getFFTSize(int n) {
+    // minmum tracking size should be at least 64
+    if(n<=64)
+        return 6;
+    // find the nearest pow 2
+    int i=0;
+    while(true) {
+        if(pow(2,i)>=n)
+            break;
+        else
+            i++;
+    }
+    // compare its neighbours
+    if(n-pow(2,i-1) > pow(2,i)-n)
+        return i;
+    else
+        return i-1;
+}
+
+
 // random smaller affine pertubation
-Mat rnd_warp(cv::Mat& a){
+Mat randWarp(cv::Mat& a){
 
     // affine warp matrix
     Mat T= Mat::zeros(2,3,CV_32F);
@@ -44,52 +65,182 @@ Mat rnd_warp(cv::Mat& a){
     return warped;
 }
 
-// element division between two complex matrix
-Mat divSpec(Mat& A,Mat& B, bool conj=true){
-    
-    vector<Mat> Ari(2),Bri(2);
-    cv::split(A,Ari);
-    cv::split(B,Bri);
-    
-    // compute elmenet by elment
-    Mat Cr = Mat::zeros(A.size(),CV_32F);
-    Mat Ci = Mat::zeros(A.size(),CV_32F);
-    for(int i=0;i<A.rows; i++) {
-        for(int j=0;j<A.cols; j++) {
-            float ar = Ari[0].at<float>(i,j);
-            float ai = Ari[1].at<float>(i,j);
-            float br = Bri[0].at<float>(i,j);
-            float bi = Bri[1].at<float>(i,j);
-            
-            float ss = br*br + bi*bi;
-            float cr = (ar*br + ai*bi)/ss;
-            float ci = (ai*br - ar*bi)/ss;
-            
-            Cr.at<float>(i,j)=cr;
-            Ci.at<float>(i,j)=ci;
-        }
-    }
-    
-    if(conj) {
-        Ci = -Ci;
-    }
-    
-    vector<Mat> Cri;
-    Cri.push_back(Cr);
-    Cri.push_back(Ci);
-    
-    Mat C;
-    merge(Cri, C);
-    return C;
+//---------------------------------------------------------------------------------------
+//------------------------------------- vDSP Helpers -------------------------------------
+
+
+float* MOSSE::createDSPSplitComplex(DSPSplitComplex& splitComplex) {
+    float* memory = (float*) malloc(totalSize * sizeof(float));
+    splitComplex = DSPSplitComplex{memory, memory + totalSize/2};
+    return memory;
 }
 
-MOSSE::MOSSE(Mat& frame, Rect rect){
+void MOSSE::doFFT(cv::Mat& mat, DSPSplitComplex* splitComplex) {
+    vDSP_ctoz((DSPComplex *) mat.ptr<float>(), 2, splitComplex, 1, totalSize/2);
+    vDSP_fft2d_zrip(FFTSetup, splitComplex, 1, 0, wlog2, hlog2, FFT_FORWARD);
+}
+
+// c = a .* (conj b), complication due to exotic memory layout of FFT output
+void MOSSE::doMulti(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) {
+    // vector dot product
+    vDSP_zvmul(b, 1, a, 1, c, 1, totalSize/2, -1); //conj on b
+    
+    // first row, first coloum
+    c->realp[0] = a->realp[0] * b->realp[0];
+    c->imagp[0] = a->imagp[0] * b->imagp[0];
+    
+    // second row, first two coloums
+    int ind = size.width/2;
+    c->realp[ind] = a->realp[ind] * b->realp[ind];
+    c->imagp[ind] = a->imagp[ind] * b->imagp[ind];
+    
+    // sub rows, first coloum
+    ind += size.width/2;
+    for(int i=0; i<size.height/2-1; i++) {
+        
+        // first item in row
+        float r1 = a->realp[ind];
+        float r2 = b->realp[ind];
+        float c1 = a->realp[ind + size.width/2];
+        float c2 = b->realp[ind + size.width/2];
+        
+        float r3 = r1*r2 + c1*c2; // conj
+        float c3 = r2*c1 - r1*c2;
+        
+        c->realp[ind] = r3;
+        c->realp[ind + size.width/2] = c3;
+        
+        // second item in row
+        r1 = a->imagp[ind];
+        r2 = b->imagp[ind];
+        c1 = a->imagp[ind + size.width/2];
+        c2 = b->imagp[ind + size.width/2];
+        
+        r3 = r1*r2 + c1*c2; // conj
+        c3 = r2*c1 - r1*c2;
+        
+        c->imagp[ind] = r3;
+        c->imagp[ind + size.width/2] = c3;
+        
+        // increment index by two rows
+        ind += size.width;
+    }
+}
+
+// c = conj (a ./ b), complication due to exotic memory layout of FFT output
+void MOSSE::doDivide(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) {
+    // first row, first two coloums
+    c->realp[0] = a->realp[0] / b->realp[0];
+    c->imagp[0] = a->imagp[0] / b->imagp[0];
+    
+    // second row, first coloum
+    int ind = size.width/2;
+    c->realp[ind] = a->realp[ind] / b->realp[ind];
+    c->imagp[ind] = a->imagp[ind] / b->imagp[ind];
+    
+    // sub rows, first coloum
+    ind += size.width/2;
+    for(int i=0; i<size.height/2-1; i++) {
+        
+        // first item in row
+        float r1 = a->realp[ind];
+        float r2 = b->realp[ind];
+        float c1 = a->realp[ind + size.width/2];
+        float c2 = b->realp[ind + size.width/2];
+        
+        float ss = r2*r2 + c2*c2;
+        float r3 = (r1*r2 + c1*c2)/ss;
+        float c3 = (c1*r2 - r1*c2)/ss;
+        
+        c->realp[ind] = r3;
+        c->realp[ind + size.width/2] = -c3;
+        
+        // second item in row
+        r1 = a->imagp[ind];
+        r2 = b->imagp[ind];
+        c1 = a->imagp[ind + size.width/2];
+        c2 = b->imagp[ind + size.width/2];
+        
+        ss = r2*r2 + c2*c2;
+        r3 = (r1*r2 + c1*c2)/ss;
+        c3 = (c1*r2 - r1*c2)/ss;
+        
+        c->imagp[ind] = r3;
+        c->imagp[ind + size.width/2] = -c3;
+        
+        // increment index by two rows
+        ind += size.width;
+    }
+    
+    // sub rows, other coloums
+    ind = 1;
+    for(int row=0; row<size.height; row++) {
+        for(int col=0; col<size.width/2-1; col++) {
+            float r1 = a->realp[ind];
+            float r2 = b->realp[ind];
+            float c1 = a->imagp[ind];
+            float c2 = b->imagp[ind];
+            
+            float ss = r2*r2 + c2*c2;
+            float r3 = (r1*r2 + c1*c2)/ss;
+            float c3 = (c1*r2 - r1*c2)/ss;
+            
+            c->realp[ind] = r3;
+            c->imagp[ind] = -c3;
+            
+            ind++;
+        }
+        ind++;
+    }
+}
+
+void MOSSE::doScale(DSPSplitComplex* a, float scale) {
+    vDSP_vsmul(a->realp, 1, &scale, a->realp, 1, totalSize/2);
+    vDSP_vsmul(a->imagp, 1, &scale, a->imagp, 1, totalSize/2);
+}
+
+//---------------------------------------------------------------------------------------
+//-------------------------------  MOSSE Implementation ---------------------------------
+MOSSE::MOSSE() {
     // random number
     srand((unsigned int)time(NULL));
+    // FFT
+    FFTSetup = vDSP_create_fftsetup(11, FFT_RADIX2);
+}
+
+MOSSE::~MOSSE() {
+    //clean FFT
+    vDSP_destroy_fftsetup(FFTSetup);
+    cleanUpAll();
+}
+
+void MOSSE::cleanUpAll() {
+    if(isInit) {
+        free(G_M);
+        free(H_M);
+        free(H1_M);
+        free(H2_M);
+        free(H1t_M);
+        free(H2t_M);
+        free(I_M);
+        free(R_M);
+        last_resp.deallocate();
+        win.deallocate();
+        last_img.deallocate();
+        isInit = false;
+    }
+}
+
+void MOSSE::init(Mat& frame, cv::Rect rect){
+    // clean up old memory
+    cleanUpAll();
     
     // compute the optimal bounding box size
-    int w = getOptimalDFTSize(rect.width);
-    int h = getOptimalDFTSize(rect.height);
+    wlog2 = getFFTSize(rect.width);
+    hlog2 = getFFTSize(rect.height);
+    int w = pow(2,wlog2);
+    int h = pow(2,hlog2);
+    totalSize = w*h;
     int x1=floor((2*rect.x+rect.width-w)/2);
     int y1=floor((2*rect.y+rect.height-h)/2);
     
@@ -98,9 +249,22 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
     size.width=w;
     size.height=h;
     
+    // init FFT
+    G_M = createDSPSplitComplex(G);
+    H1_M = createDSPSplitComplex(H1);
+    H2_M = createDSPSplitComplex(H2);
+    H_M = createDSPSplitComplex(H);
+    I_M = createDSPSplitComplex(I);
+    H1t_M = createDSPSplitComplex(H1t);
+    H2t_M = createDSPSplitComplex(H2t);
+    R_M = createDSPSplitComplex(R);
+    
     // crop the image
     Mat img;
     getRectSubPix(frame, size, pos, img);
+    
+    // init response matrix
+    last_resp.create(size.height, size.width, cv::DataType<float>::type);
     
     // create Hanning window for preprocess
     createHanningWindow(win, size, CV_32F);
@@ -108,51 +272,45 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
     // create ground truth
     Mat g = Mat::zeros(size,CV_32F);
     g.at<float>(h/2, w/2) = 1;
-    GaussianBlur(g, g, Size(-1,-1), 2.0);
+    GaussianBlur(g, g, cv::Size(-1,-1), 2.0);
     double minVal; double maxVal;
     cv::minMaxLoc( g, &minVal, &maxVal);
     g=g/maxVal;
-    cv::dft(g,G,DFT_COMPLEX_OUTPUT);
-    
-    // create filter satisfied the ground truth
-    H1 = Mat::zeros(G.size(),CV_32FC2);
-    H2 = Mat::zeros(G.size(),CV_32FC2);
+    doFFT(g, &G);
     
     // random warp the image to create bootstrap trainning data
     for(int i=0; i<128 ; i++){
-        Mat a=rnd_warp(img);
+        Mat a=randWarp(img);
         preprocess(a);
         //cout<<a<<endl;
-        Mat A;
-        cv::dft(a,A,DFT_COMPLEX_OUTPUT);
-        Mat H1_temp;
-        Mat H2_temp;
-        mulSpectrums(G, A, H1_temp, 0, true );
-        mulSpectrums(A, A, H2_temp, 0, true );
-        H1+=H1_temp;
-        H2+=H2_temp;
-        //cout << H1 << H2 << endl;
+        
+        doFFT(a, &I);
+        doMulti(&G, &I, &H1t);
+        doMulti(&I, &I, &H2t);
+        vDSP_zvadd(&H1, 1, &H1t, 1, &H1, 1, totalSize/2);
+        vDSP_zvadd(&H2, 1, &H2t, 1, &H2, 1, totalSize/2);
     }
     
     // compute the H
-    update_kernel();
+    updateKernel();
     
     // run the first frame
     update(frame);
+    
+    isInit = true;
 }
 
-
-void MOSSE::update(Mat& frame, double rate){
-
-    while(true) {
+void MOSSE::update(Mat& frame, float rate){
+    
+    int updateCount = 0;
+    while(updateCount < updateThre) {
         // run filter to predict movement
         getRectSubPix(frame, size, pos, last_img);
         preprocess(last_img);
         
         // correlate
-        Mat last_resp;
-        Point delta_xy;
-        double psr=correlate(last_img,last_resp,delta_xy);
+        cv::Point delta_xy;
+        double psr=correlate(last_img,delta_xy);
         
         if(psr>0.8) {
             isGood = true;
@@ -172,70 +330,19 @@ void MOSSE::update(Mat& frame, double rate){
     // train the filte based on the prediction
     getRectSubPix(frame, size, pos, last_img);
     preprocess(last_img);
-    
-    Mat A;
-    cv::dft(last_img,A,DFT_COMPLEX_OUTPUT);
-    Mat H1_temp;
-    Mat H2_temp;
-    mulSpectrums(G, A, H1_temp, 0, true );
-    mulSpectrums(A, A, H2_temp, 0, true );
-    H1=H1*(1.0-rate)+H1_temp*rate;
-    H2=H2*(1.0-rate)+H2_temp*rate;
-    update_kernel();
-}
 
-Mat MOSSE::state_vis(){
-    Mat f;
-    idft(H, f,DFT_SCALE|DFT_REAL_OUTPUT);
-    Size f_size=f.size();
-    int w=f_size.width;
-    int h=f_size.height;
+    doFFT(last_img, &I);
+    doMulti(&G, &I, &H1t);
+    doMulti(&I, &I, &H2t);
     
-    shiftRows(f,-floor(h/2));
-    shiftCols(f,-floor(w/2));
-    
-    double fminVal; double fmaxVal; Point fminLoc; Point fmaxLoc;
-    minMaxLoc( f, &fminVal, &fmaxVal, &fminLoc, &fmaxLoc );
-    
-    Mat kernel =(f-fminVal*(Mat::ones(f.size(),CV_32FC1))/ (fmaxVal-fminVal)*255 );
-    
-    Mat kernel8;
-    kernel.convertTo(kernel8, UINT8_MAX);
-    
-    Mat resp;
-    resp=last_resp;
-    double minVal; double maxVal; Point minLoc; Point maxLoc;
-    minMaxLoc( resp, &minVal, &maxVal, &minLoc, &maxLoc );
-    resp=(resp/maxVal)*255;
-    
-    Mat resp8;
-    resp.convertTo(resp8, UINT8_MAX);
-    
-    
-    Mat vis;
-    hconcat(vis, kernel8, resp8);
-    return vis;
-}
+    doScale(&H1t, rate);
+    doScale(&H1, 1.0-rate);
+    vDSP_zvadd(&H1, 1, &H1t, 1, &H1, 1, totalSize/2);
+    doScale(&H2t, rate);
+    doScale(&H2, 1.0-rate);
+    vDSP_zvadd(&H2, 1, &H2t, 1, &H2, 1, totalSize/2);
 
-void MOSSE::draw_state(Mat& vis){
-//    int x=pos.x; int y=pos.y;
-//    int w=size.width; int h=size.height;
-//    int x1=int(x-0.5*w);
-//    int y1=int(y-0.5*h);
-//    int x2=int(x+0.5*w);
-//    int y2=int(y+0.5*h);
-//    
-//    //rectangle(vis, Point (x1,y1), Point (x2,y2));
-//    
-//    if(good==true){
-//        //circle(vis, Point (int(x), int(y)),2,(0, 0, 255),-1);
-//    }
-//    else{
-//        //line(vis, Point (x1, y1), Point (x2, y2), (0, 0, 255));
-//        //line(vis, Point (x2, y1), Point (x1, y2), (0, 0, 255));
-//    }
-//    
-//    //draw_str(vis, (x1, y2+16), 'PSR: %.2f' % self.psr)<TODO>//import from common
+    updateKernel();
 }
 
 void MOSSE::preprocess(Mat& image){
@@ -255,86 +362,38 @@ void MOSSE::preprocess(Mat& image){
     image=image.mul(win);
 }
 
-double MOSSE::correlate(Mat& img, Mat& last_resp, Point &delta_xy){
+double MOSSE::correlate(Mat& img, cv::Point &delta_xy){
     
     // circular convolve in frequencey domain
-    Mat C, I;
-    cv::dft(img,I,DFT_COMPLEX_OUTPUT);
-    mulSpectrums(I, H, C, 0, true );
+    doFFT(img, &I);
+    doMulti(&I, &H, &R);
     
     // convert response into spatial
-    idft(C, last_resp, DFT_SCALE|DFT_REAL_OUTPUT);
+    vDSP_fft2d_zrip(FFTSetup, &R, 1, 0, wlog2, hlog2, FFT_INVERSE);
+    vDSP_ztoc(&R, 1, (DSPComplex*) last_resp.ptr<float>() , 2, totalSize/2);
     
     // compute dx dy
-    double minVal;double maxVal; Point minLoc; Point maxLoc;
+    double minVal;double maxVal;
+    cv::Point minLoc; cv::Point maxLoc;
     minMaxLoc(last_resp,&minVal, &maxVal, &minLoc, &maxLoc);
-    delta_xy= Point(maxLoc.x-last_resp.size().width/2,
+    delta_xy= cv::Point(maxLoc.x-last_resp.size().width/2,
                     maxLoc.y-last_resp.size().height/2);
 
     // compute psr
-    Mat side_resp=last_resp(
-        Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
-    Mat mean; Mat stddev;
-    meanStdDev(side_resp, mean, stddev);
-    double smean=mean.at<float>(0);
-    double sstd=stddev.at<float>(0);
-    double psr=(maxVal-smean)/(sstd+eps);
+    double psr = 0.9;
+    if(isDebug){
+        Mat side_resp=last_resp(
+            cv::Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
+        Mat mean; Mat stddev;
+        meanStdDev(side_resp, mean, stddev);
+        double smean=mean.at<float>(0);
+        double sstd=stddev.at<float>(0);
+        psr=(maxVal-smean)/(sstd+eps);
+    }
     return psr;
 }
 
 
-void MOSSE::update_kernel(){
-    // H <= *(H1 / H2)
-    H=divSpec(H1,H2,true);
+void MOSSE::updateKernel(){
+    doDivide(&H1, &H2, &H);
 }
-
-
-//circular shift one row from up to down
-void MOSSE::shiftRows(Mat& mat) {
-    
-    Mat temp;
-    Mat m;
-    int k = (mat.rows-1);
-    mat.row(k).copyTo(temp);
-    for(; k > 0 ; k-- ) {
-        m = mat.row(k);
-        mat.row(k-1).copyTo(m);
-    }
-    m = mat.row(0);
-    temp.copyTo(m);
-    
-}
-
-void MOSSE::shiftRows(Mat& mat,int n) {
-    
-    if( n < 0 ) {
-        n = -n;
-        flip(mat,mat,0);
-        for(int k=0; k < n;k++) {
-            shiftRows(mat);
-        }
-        flip(mat,mat,0);
-    } else {
-        for(int k=0; k < n;k++) {
-            shiftRows(mat);
-        }
-    }
-}
-
-//circular shift n columns from left to right if n > 0, -n columns from right to left if n < 0
-void MOSSE::shiftCols(Mat& mat, int n) {
-    
-    if(n < 0){
-        n = -n;
-        flip(mat,mat,1);
-        transpose(mat,mat);
-        shiftRows(mat,n);
-        transpose(mat,mat);
-        flip(mat,mat,1);
-    } else {
-        transpose(mat,mat);
-        shiftRows(mat,n);
-        transpose(mat,mat);
-    }
-}
-
