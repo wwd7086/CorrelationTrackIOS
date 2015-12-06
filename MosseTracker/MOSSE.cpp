@@ -13,8 +13,12 @@ float randNum(){
     return ((float)rand()) / RAND_MAX;
 }
 
-// return fft size pow2
+// return optimal fft size which satisfy pow2
 int getFFTSize(int n) {
+    // minmum tracking size should be at least 64
+    if(n<=64)
+        return 6;
+    // find the nearest pow 2
     int i=0;
     while(true) {
         if(pow(2,i)>=n)
@@ -22,12 +26,16 @@ int getFFTSize(int n) {
         else
             i++;
     }
-    return i;
+    // compare its neighbours
+    if(n-pow(2,i-1) > pow(2,i)-n)
+        return i;
+    else
+        return i-1;
 }
 
 
 // random smaller affine pertubation
-Mat rnd_warp(cv::Mat& a){
+Mat randWarp(cv::Mat& a){
 
     // affine warp matrix
     Mat T= Mat::zeros(2,3,CV_32F);
@@ -58,7 +66,7 @@ Mat rnd_warp(cv::Mat& a){
 }
 
 //---------------------------------------------------------------------------------------
-//------------------------------------- vDSP Helper -------------------------------------
+//------------------------------------- vDSP Helpers -------------------------------------
 
 
 float* MOSSE::createDSPSplitComplex(DSPSplitComplex& splitComplex) {
@@ -72,12 +80,12 @@ void MOSSE::doFFT(cv::Mat& mat, DSPSplitComplex* splitComplex) {
     vDSP_fft2d_zrip(FFTSetup, splitComplex, 1, 0, wlog2, hlog2, FFT_FORWARD);
 }
 
-// c = a .* (conj b)
+// c = a .* (conj b), complication due to exotic memory layout of FFT output
 void MOSSE::doMulti(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) {
     // vector dot product
     vDSP_zvmul(b, 1, a, 1, c, 1, totalSize/2, -1); //conj on b
     
-    // first row, first two coloums
+    // first row, first coloum
     c->realp[0] = a->realp[0] * b->realp[0];
     c->imagp[0] = a->imagp[0] * b->imagp[0];
     
@@ -86,7 +94,7 @@ void MOSSE::doMulti(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) 
     c->realp[ind] = a->realp[ind] * b->realp[ind];
     c->imagp[ind] = a->imagp[ind] * b->imagp[ind];
     
-    // sub rows, first two coloums
+    // sub rows, first coloum
     ind += size.width/2;
     for(int i=0; i<size.height/2-1; i++) {
         
@@ -119,18 +127,18 @@ void MOSSE::doMulti(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) 
     }
 }
 
-// conj (c = a ./ b)
+// c = conj (a ./ b), complication due to exotic memory layout of FFT output
 void MOSSE::doDivide(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c) {
     // first row, first two coloums
     c->realp[0] = a->realp[0] / b->realp[0];
     c->imagp[0] = a->imagp[0] / b->imagp[0];
     
-    // second row, first two coloums
+    // second row, first coloum
     int ind = size.width/2;
     c->realp[ind] = a->realp[ind] / b->realp[ind];
     c->imagp[ind] = a->imagp[ind] / b->imagp[ind];
     
-    // sub rows, first two coloums
+    // sub rows, first coloum
     ind += size.width/2;
     for(int i=0; i<size.height/2-1; i++) {
         
@@ -193,10 +201,39 @@ void MOSSE::doScale(DSPSplitComplex* a, float scale) {
 
 //---------------------------------------------------------------------------------------
 //-------------------------------  MOSSE Implementation ---------------------------------
-
-MOSSE::MOSSE(Mat& frame, cv::Rect rect){
+MOSSE::MOSSE() {
     // random number
     srand((unsigned int)time(NULL));
+    // FFT
+    FFTSetup = vDSP_create_fftsetup(11, FFT_RADIX2);
+}
+
+MOSSE::~MOSSE() {
+    //clean FFT
+    vDSP_destroy_fftsetup(FFTSetup);
+    cleanUpAll();
+}
+
+void MOSSE::cleanUpAll() {
+    if(isInit) {
+        free(G_M);
+        free(H_M);
+        free(H1_M);
+        free(H2_M);
+        free(H1t_M);
+        free(H2t_M);
+        free(I_M);
+        free(R_M);
+        last_resp.deallocate();
+        win.deallocate();
+        last_img.deallocate();
+        isInit = false;
+    }
+}
+
+void MOSSE::init(Mat& frame, cv::Rect rect){
+    // clean up old memory
+    cleanUpAll();
     
     // compute the optimal bounding box size
     wlog2 = getFFTSize(rect.width);
@@ -213,7 +250,6 @@ MOSSE::MOSSE(Mat& frame, cv::Rect rect){
     size.height=h;
     
     // init FFT
-    FFTSetup = vDSP_create_fftsetup(11, FFT_RADIX2);
     G_M = createDSPSplitComplex(G);
     H1_M = createDSPSplitComplex(H1);
     H2_M = createDSPSplitComplex(H2);
@@ -244,7 +280,7 @@ MOSSE::MOSSE(Mat& frame, cv::Rect rect){
     
     // random warp the image to create bootstrap trainning data
     for(int i=0; i<128 ; i++){
-        Mat a=rnd_warp(img);
+        Mat a=randWarp(img);
         preprocess(a);
         //cout<<a<<endl;
         
@@ -256,23 +292,12 @@ MOSSE::MOSSE(Mat& frame, cv::Rect rect){
     }
     
     // compute the H
-    update_kernel();
+    updateKernel();
     
     // run the first frame
     update(frame);
-}
-
-MOSSE::~MOSSE() {
-    //clean FFT
-    vDSP_destroy_fftsetup(FFTSetup);
-    free(G_M);
-    free(H_M);
-    free(H1_M);
-    free(H2_M);
-    free(H1t_M);
-    free(H2t_M);
-    free(I_M);
-    free(R_M);
+    
+    isInit = true;
 }
 
 void MOSSE::update(Mat& frame, float rate){
@@ -322,7 +347,7 @@ void MOSSE::update(Mat& frame, float rate){
     doScale(&H2, 1.0-rate);
     vDSP_zvadd(&H2, 1, &H2t, 1, &H2, 1, totalSize/2);
 
-    update_kernel();
+    updateKernel();
 }
 
 void MOSSE::preprocess(Mat& image){
@@ -375,7 +400,6 @@ double MOSSE::correlate(Mat& img, cv::Point &delta_xy){
 }
 
 
-void MOSSE::update_kernel(){
-    // H <= *(H1 / H2)
+void MOSSE::updateKernel(){
     doDivide(&H1, &H2, &H);
 }

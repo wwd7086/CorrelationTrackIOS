@@ -8,10 +8,13 @@ class MOSSE{
 public:
     
     // constructor
-    MOSSE(cv::Mat& frame, cv::Rect rect);
+    MOSSE();
     ~MOSSE();
     
-    // call it every frame
+    // call once to set up
+    void init(cv::Mat& frame, cv::Rect rect);
+    
+    // call it every frame to track
     void update(cv::Mat& frame, float rate=0.125);
     
     // return center of bounding box
@@ -25,22 +28,30 @@ public:
     }
     
 private:
-    
+    // clean up memory
+    void cleanUpAll();
+    // preprocessing image ready for fft
     void preprocess(cv::Mat& img);
+    // correlate the image with learned filter to predict movement
     double correlate(cv::Mat& img, cv::Point& delta_xy);
-    void update_kernel();
+    // update the learned filter
+    void updateKernel();
     
+    // vdsp helpers
     float* createDSPSplitComplex(DSPSplitComplex& splitComplex);
     void doFFT(cv::Mat& mat, DSPSplitComplex* splitComplex);
     void doMulti(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c);
     void doDivide(DSPSplitComplex* a, DSPSplitComplex* b, DSPSplitComplex* c);
     void doScale(DSPSplitComplex* a, float scale);
-
+    
+    // state
+    bool isInit = false;
+    
     // the size of bounding box
     cv::Size size;
-    int wlog2;
-    int hlog2;
-    unsigned long totalSize;
+    int wlog2 = 0;
+    int hlog2 = 0;
+    unsigned long totalSize = 0;
     // the center point of bounding box
     cv::Point pos;
     
@@ -77,7 +88,7 @@ private:
     // run extra scoring code
     bool isDebug = false;
     // metric for tracking result
-    double psr;
+    double psr = 0;
     bool isGood=false;
     
     // parameters

@@ -28,7 +28,7 @@ const float convertBiasY = 160;
     MyVideoCamera* _videoCamera;
     
     // Tracker
-    MOSSE* tracker;
+    MOSSE tracker;
     bool needInitialize;
     bool startTrack;
     
@@ -106,16 +106,15 @@ const float convertBiasY = 160;
         if(needInitialize){
             // set up tracker
             cv::Rect rect = [self getRect];
-            delete tracker;
-            tracker = new MOSSE(image, rect);
+            tracker.init(image, rect);
             needInitialize = false;
             // visualize
             [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                cv::Rect rect = tracker->getRect();
+                cv::Rect rect = tracker.getRect();
                 sizeText.text = [NSString stringWithFormat:@"W:%d H:%d",rect.width,rect.height ];
             }];
         } else {
-            tracker->update(image);
+            tracker.update(image);
         }
         
         // log processing frame rate
@@ -132,7 +131,7 @@ const float convertBiasY = 160;
         
         // visualize bounding box
         [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            [self moveRect: tracker->getRect()];
+            [self moveRect: tracker.getRect()];
         }];
     }
 }
