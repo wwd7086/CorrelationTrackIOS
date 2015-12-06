@@ -143,9 +143,8 @@ MOSSE::MOSSE(Mat& frame, Rect rect){
 
 
 void MOSSE::update(Mat& frame, double rate){
-    
-    int updateCount = 0;
-    while(updateCount < updateThre) {
+
+    while(true) {
         // run filter to predict movement
         getRectSubPix(frame, size, pos, last_img);
         preprocess(last_img);
@@ -165,15 +164,10 @@ void MOSSE::update(Mat& frame, double rate){
         pos.x += delta_xy.x;
         pos.y += delta_xy.y;
         
-        // counting
-        updateCount++;
-        
         if(abs(delta_xy.x) < size.width*boundaryThre &&
            abs(delta_xy.y) < size.height*boundaryThre)
             break;
     }
-    if(updateCount>1)
-        std::cout<<"!!large motion iterative update!!:"<<updateCount<<std::endl;
     
     // train the filte based on the prediction
     getRectSubPix(frame, size, pos, last_img);
@@ -278,16 +272,13 @@ double MOSSE::correlate(Mat& img, Mat& last_resp, Point &delta_xy){
                     maxLoc.y-last_resp.size().height/2);
 
     // compute psr
-    double psr = 0.9;
-    if(isDebug){
-        Mat side_resp=last_resp(
-                    Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
-        Mat mean; Mat stddev;
-        meanStdDev(side_resp, mean, stddev);
-        double smean=mean.at<float>(0);
-        double sstd=stddev.at<float>(0);
-        psr=(maxVal-smean)/(sstd+eps);
-    }
+    Mat side_resp=last_resp(
+        Rect(max(0,maxLoc.x-2),max(0,maxLoc.y-2),4,4));
+    Mat mean; Mat stddev;
+    meanStdDev(side_resp, mean, stddev);
+    double smean=mean.at<float>(0);
+    double sstd=stddev.at<float>(0);
+    double psr=(maxVal-smean)/(sstd+eps);
     return psr;
 }
 
