@@ -1,5 +1,17 @@
 #Efficient Implementation of Correlation Filter Based Tracker in ios 	 
 Wenda Wang, Yu-Te Cheng	
+
+##Result:
+Video Demo: https://www.youtube.com/watch?v=rQPlwaHLW9o
+
+Performance:
+
+| Pathc Size | FPS |
+| ---------- | --- |
+| 64X64      | 750 |
+| 128X128    | 300 |
+| 256X256    | 125 |
+| 512X512    | 38  |
 											
 ##Summary: 
 We try to implement the correlation filter based tracker in ios. Since the computation of correlation is just element-wise multiplication in frequency domain, the filter can run at very high frame rate, which is well-suited for mobile application. We also try to leverage the existing fast implementation of FFT and other linear algebra operations exist in ios framework.
@@ -28,62 +40,20 @@ Success Metrics:
 - Show a live video, that tracker can track object (face, body….) in real life scene  		 							
 
 ##Schedule: 
+CheckPoint1:
 
-Nov 15th  
-   1. Environment setup.	Completed
-   2. Code up a basic MOSSE filter.	Completed
-   3. Initial test on MOSSE filter (if time permitted)	Completed
-   
-   Wenda: 1 Yu-Te: 2
-
-Nov 22th  
-   1. MOSSE filter completed 	Completed
-   2. Robustness test and improvement	Completed
-   3. Get start with UI implementation (if time permitted)	Completed
-   
-   Wenda: 2 Yu-Te: 1
-
-Ahead of schedule:
 UI: Completed 
 System Integration with Tracker, UI and camera: Completed
 
+CheckPoint2:
 
-Nov 24th  Project CheckPoint
-
-Update on Nov 24th: 
 In addition to the scheduled task, we also finished to UI implementation and System Integration. Now, We are ahead of the schedule, so we can focus on improving the performance of the current correlation filter.
 
-New Schedule
+CheckPoint3:
 
-Nov 28th   
-   1. Research on AVFoundation 
-   2. Research on vDSP FFT 
-   
-   Wenda: 2 Yu-Te: 1
+Finish the accelearation using vDSP and high frame rate camera
 
-Dec 2nd   
-   1. Use AVFoundation framework service to Video 
-   2. Implement vDSP FFT on correlation filter
-   3. Kernelized Correlation filter code up (if time permitted)
-   
-   Wenda: 2 Yu-Te: 1
-   
-Dec 5th     
-   1. Whole system completed, test  and improvement. 
-   2. Kernelized Correlation filter test (if time permitted)
-   
-   Wenda: 1 Yu-Te: 2
 
-Dec 8th 
-   1. Whole system completed, test and improvement. 
-   2. Slides preparation & Documentation.
-   3. Kernelized Correlation filter completed and test (if time permitted)
-   
-   Wenda: 1, 2, 3 Yu-Te: 1, 2, 3
-
-Dec 10th   Project Presentation
-
-Dec 11th   Project Final Write Up
 
 
 						
